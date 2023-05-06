@@ -2,15 +2,15 @@
   "name": "farming-subgraphs",
   "license": "MIT",
   "scripts": {
-    "codegen": "graph codegen",
-    "build": "graph build",
+    "build": "npm run clean && npm run subgraph:codegen && npm run subgraph:build",
+    "clean": "rimraf build generated",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ mahadao/farming-ethereum",
     "create-local": "graph create --node http://localhost:8020/ mahadao/farming-ethereum",
     "remove-local": "graph remove --node http://localhost:8020/ mahadao/farming-ethereum",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 mahadao/farming-ethereum",
     "generate:schema": "cp ./schemas/${VERSION}.schema.graphql  schema.graphql",
     "prepare:subgraph": "mustache ./config/${NETWORK}-${VERSION}.json ./templates/${BLOCKCHAIN}.subgraph.template.yaml > subgraph.yaml && rm -rf generated && npm run generate:schema && npm run subgraph:codegen && npm run subgraph:build",
-    "subgraph:codegen": "graph codegen --output-dir ./generated",
+    "subgraph:codegen": "graph codegen",
     "subgraph:build": "graph build",
     "subgraph:deploy:hosted": "graph deploy  --product hosted-service  $SLUG --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
     "deploy:hosted:goerli-v3": "VERSION=v3 BLOCKCHAIN=v3 NETWORK=mainnet env-cmd npm run prepare:subgraph && SLUG=mahalend/protocol-v3-mainnet env-cmd npm run subgraph:deploy:hosted",
@@ -21,14 +21,15 @@
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.48.0",
     "@graphprotocol/graph-ts": "^0.29.3",
-    "env-cmd": "^10.1.0",
-    "mustache": "^3.1.0",
-    "typescript": "3.5.3",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^6.2.2",
     "eslint-config-prettier": "^6.1.0",
     "lint-staged": "^9.2.5",
-    "prettier": "^1.18.2"
+    "mustache": "^3.1.0",
+    "prettier": "^1.18.2",
+    "rimraf": "^5.0.0",
+    "typescript": "3.5.3"
   }
 }
