@@ -4,3 +4,31 @@ type ExampleEntity @entity {
   owner: Bytes! # address
   spender: Bytes! # address
 }
+
+type User @entity {
+  id: ID!
+}
+
+type FarmingPosition @entity {
+  id: ID!
+  user: User!
+
+  # assets that the user has deposited or added as rewards
+  depositAssets: [Asset!]!
+  rewardAssets: [Asset!]!
+
+  # their respective balances
+  depositAssetBalances: [BigInt]!
+  rewardAssetBalances: [BigInt]!
+
+  # based on the balances; the apr is calculated
+  aprUsd: Int!
+}
+
+type Asset @entity {
+  id: ID!
+  symbol: String!
+  name: String!
+  decimals: Int!
+  priceUSDe8: BigInt! # price of the asset in USD in 1e8
+}
